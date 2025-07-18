@@ -1,10 +1,8 @@
 <script lang="ts">
-  import { fly, fade } from 'svelte/transition';
+  import { fly } from 'svelte/transition';
   let answered = false;
   let answer = '';
   let animating = false;
-  let tipAmount = '';
-  let tipMessage = '';
 
   function askFrog() {
     animating = true;
@@ -14,25 +12,6 @@
       answered = true;
       animating = false;
     }, 1200);
-  }
-
-  async function tipHandler() {
-    if (!tipAmount) {
-      tipMessage = 'Please select an amount.';
-      return;
-    }
-    tipMessage = 'Redirecting to payment...';
-    const res = await fetch('/api/create-checkout-session', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ amount: tipAmount })
-    });
-    const data = await res.json();
-    if (data.url) {
-      window.location.href = data.url;
-    } else {
-      tipMessage = 'Something went wrong. Please try again.';
-    }
   }
 </script>
 
@@ -50,21 +29,9 @@
   {/if}
 
   <!-- Tip Menu -->
-  <div style="margin-top: 2em; padding: 1.5em; background: #f7f7f7; border-radius: 12px; box-shadow: 0 2px 8px #0001; min-width: 260px; max-width: 90vw;">
+  <div style="margin-top: 2em; padding: 1.5em; background: #f7f7f7; border-radius: 12px; box-shadow: 0 2px 8px #0001; min-width: 260px; max-width: 90vw; display: flex; flex-direction: column; align-items: center;">
     <h2 style="margin-bottom: 0.5em; font-size: 1.1em; color: #3a3a3a;">Enjoyed this? Leave a tip!</h2>
-    <form on:submit|preventDefault={tipHandler} style="display: flex; flex-direction: column; gap: 0.7em; align-items: center;">
-      <select bind:value={tipAmount} style="padding: 0.5em 1em; border-radius: 6px; border: 1px solid #ccc; font-size: 1em;">
-        <option value="">Select amount</option>
-        <option value="2">$2</option>
-        <option value="5">$5</option>
-        <option value="10">$10</option>
-        <option value="20">$20</option>
-      </select>
-      <button type="submit" style="padding: 0.6em 1.5em; border-radius: 6px; border: none; background: #ffd966; color: #222; font-weight: bold; font-size: 1em; cursor: pointer; transition: background 0.2s;">Leave Tip</button>
-    </form>
-    {#if tipMessage}
-      <div style="margin-top: 0.7em; color: #2e7d32; font-weight: 500;">{tipMessage}</div>
-    {/if}
+    <button on:click={() => window.location.href = 'https://coff.ee/drphil5043'} style="padding: 0.7em 2em; border-radius: 6px; border: none; background: #ffd966; color: #222; font-weight: bold; font-size: 1.1em; cursor: pointer; transition: background 0.2s;">Tip @ coff.ee/drphil5043</button>
   </div>
 </main>
 
