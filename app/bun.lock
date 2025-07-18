@@ -5,7 +5,6 @@
       "name": "app",
       "dependencies": {
         "dotenv": "^17.2.0",
-        "stripe": "^18.3.0",
       },
       "devDependencies": {
         "@sveltejs/adapter-auto": "^6.0.0",
